@@ -1,0 +1,118 @@
+version: 1
+name: DNA
+author: Karl Ostmo
+description: |
+  Splice organisms
+creative: false
+seed: 1
+objectives:
+  - goal:
+      - |
+        Copy strands of DNA in the lab.
+    condition: |
+      customer <- robotnamed "customer";
+      as customer {has "cone"};
+robots:
+  - name: base
+    dir: [1, 0]
+    devices:
+      - branch predictor
+      - treads
+      - antenna
+      - comparator
+      - workbench
+      - grabber
+      - dictionary
+      - lambda
+      - logger
+      - welder
+      - hearing aid
+      - scanner
+      - strange loop
+    inventory:
+      - [1, flower]
+  - name: verifier
+    system: true
+    dir: [1, 0]
+    display:
+      invisible: false
+      attr: 'robot'
+    inventory:
+      - [64, guanine]
+      - [64, cytosine]
+      - [64, adenine]
+      - [64, thymine]
+    program: |
+      run "scenarios/Challenges/_dna/verifier.sw"
+solution: |
+   run "scenarios/Challenges/_dna/solution.sw"
+entities:
+  - name: guanine
+    display:
+      char: 'G'
+      attr: red
+    description:
+      - One of the four nucleobases in DNA.
+      - Is paired with "cytosine".
+    properties: [portable, known]
+  - name: cytosine
+    display:
+      char: 'C'
+      attr: blue
+    description:
+      - One of the four nucleobases in DNA.
+      - Is paired with "guanine".
+    properties: [portable, known]
+  - name: adenine
+    display:
+      char: 'A'
+      attr: green
+    description:
+      - One of the four nucleobases in DNA.
+      - Is paired with "thymine".
+    properties: [portable, known]
+  - name: thymine
+    display:
+      char: 'T'
+      attr: gold
+    description:
+      - One of the four nucleobases in DNA.
+      - Is paired with "adenine".
+    properties: [portable, known]
+known: []
+world:
+  default: [grass]
+  upperleft: [0, 0]
+  offset: false
+  palette:
+    '┬': [stone, down and horizontal wall]
+    '┴': [stone, up and horizontal wall]
+    '─': [stone, horizontal wall]
+    '├': [stone, right and vertical wall]
+    '┐': [stone, upper right corner]
+    '┘': [stone, lower right corner]
+    '┤': [stone, left and vertical wall]
+    '┌': [stone, upper left corner]
+    '└': [stone, lower left corner]
+    '.': [stone]
+    ':': [blank]
+    'v': [blank, null, verifier]
+    'B': [stone, null, base]
+  map: |
+    .┌┐...............................................................
+    Bv├──┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬.............................
+    .└┘..::::::::::::::::::::::::::::::::.............................
+    .....::::::::::::::::::::::::::::::::.............................
+    .....┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴.............................
+    ..................................................................
+    ..................................................................
+    ..................................................................
+    ..................................................................
+    .......................................┌┐.........................
+    .....┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬──┤:.........................
+    .....::::::::::::::::::::::::::::::::..└┘.........................
+    .....::::::::::::::::::::::::::::::::.............................
+    .....┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴.............................
+    ..................................................................
+    ..................................................................
+    
