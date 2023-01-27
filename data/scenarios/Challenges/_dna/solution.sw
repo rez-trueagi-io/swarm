@@ -1,4 +1,3 @@
-
 def doN = \n. \f. if (n > 0) {f; doN (n - 1) f} {}; end;
 
 def waitWhileHere = \item.
@@ -6,6 +5,13 @@ def waitWhileHere = \item.
     if stillHere {
         waitWhileHere item;
     } {};
+    end;
+
+def waitUntilHere = \item.
+    hereNow <- ishere item;
+    if hereNow {} {
+        waitUntilHere item;
+    };
     end;
 
 def moveToPattern =
@@ -24,15 +30,23 @@ def moveToOtherRow =
     move;
     end;
 
+def waitForItem : dir -> cmd text = \d.
+    item <- scan d;
+    case item (\_. waitForItem d) return;
+    end;
 
 /**
 Store the observed entities in the recursion stack.
 */
 def replicatePattern = \standbyFunc. \n.
     if (n > 0) {
-        _thing <- scan down;
+        thingTemp <- waitForItem down;
+        let thing = thingTemp in
         move;
         replicatePattern standbyFunc $ n - 1;
+
+        place thing;
+        move;
     } {
         standbyFunc;
     }
@@ -46,6 +60,8 @@ def go =
     waitWhileHere sentinel;
     moveToPattern;
     replicatePattern moveToOtherRow 32;
+    move;
+    _ <- grab;
     end;
 
 go;
