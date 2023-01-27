@@ -25,29 +25,36 @@ def waitForFlower =
     };
     end;
 
+def myStandby =
+    teleport self (1, -4);
+    _flower <- grab;
+    teleport self (36, -11);
+    turn back;
+    end;
 
-def placeBase = \n.
+def placeBase = \standbyFunc. \n. 
 
     if (n > 0) {
 
         idx <- random 4;
-        ent <- getBaseForNumber idx;
+        entTemp <- getBaseForNumber idx;
+        let ent = entTemp in
         place ent;
         move;
 
-        placeBase $ n - 1;
+        placeBase standbyFunc $ n - 1;
 
         place ent;
         move;
     } {
-        teleport self (5, -11);
+        standbyFunc;
+        
     };
     end;
 
 def makeDnaStrand =
     teleport self (5, -2);
-    placeBase 4;
-    // placeBase 32;
+    placeBase myStandby 32;
 
     end;
 
