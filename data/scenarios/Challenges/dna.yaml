@@ -3,7 +3,7 @@ name: DNA
 author: Karl Ostmo
 description: |
   Splice organisms
-creative: true
+creative: false
 seed: 1
 objectives:
   - goal:
@@ -26,6 +26,7 @@ robots:
       - lambda
       - logger
       - welder
+      - drill
       - hearing aid
       - scanner
       - strange loop
@@ -39,13 +40,34 @@ robots:
     system: true
     dir: [1, 0]
     display:
-      invisible: false
+      invisible: true
       attr: 'robot'
+    devices:
+      - drill
     inventory:
-      - [64, guanine]
-      - [64, cytosine]
-      - [64, adenine]
-      - [64, thymine]
+      - [128, guanine]
+      - [128, cytosine]
+      - [128, adenine]
+      - [128, thymine]
+      - [1, gold coin]
+      - [1, organic sludge]
+      - [1, branch predictor]
+      - [1, treads]
+      - [1, beaglepuss]
+      - [1, antenna]
+      - [1, comparator]
+      - [1, clock]
+      - [1, workbench]
+      - [1, grabber]
+      - [1, ADT calculator]
+      - [1, dictionary]
+      - [1, lambda]
+      - [1, logger]
+      - [1, welder]
+      - [1, hearing aid]
+      - [1, scanner]
+      - [1, strange loop]
+      - [1, solar panel]
     program: |
       run "data/scenarios/Challenges/_dna/verifier.sw"
 solution: |
@@ -83,6 +105,40 @@ entities:
       - One of the four nucleobases in DNA.
       - Is paired with "adenine".
     properties: [portable, known]
+  - name: switch (off)
+    display:
+      attr: red
+      char: '•'
+    description:
+    - A control in the deactivated position.
+    properties: [known]
+  - name: switch (on)
+    display:
+      attr: green
+      char: '•'
+    description:
+    - A control in the activated position.
+    properties: [known]
+  - name: organic sludge
+    display:
+      attr: green
+      char: 'S'
+    description:
+    - A repulsive, shuddering mass of slime.
+    properties: [portable]
+recipes:
+  - in:
+    - [1, switch (off)]
+    out:
+    - [1, switch (on)]
+    required:
+    - [1, drill]
+  - in:
+    - [1, switch (on)]
+    out:
+    - [1, switch (off)]
+    required:
+    - [1, drill]
 known: [bit (0), bit (1)]
 world:
   default: [grass]
@@ -92,6 +148,7 @@ world:
     '┬': [stone, down and horizontal wall]
     '┴': [stone, up and horizontal wall]
     '─': [stone, horizontal wall]
+    '│': [stone, vertical wall]
     '├': [stone, right and vertical wall]
     '┐': [stone, upper right corner]
     '┘': [stone, lower right corner]
@@ -102,7 +159,7 @@ world:
     ':': [blank]
     'v': [blank, null, verifier]
     'B': [stone, null, base]
-    '0': [blank, bit (0)]
+    '0': [blank, switch (off)]
   map: |
     ..................................................................
     .....┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬.............................
@@ -114,9 +171,9 @@ world:
     ..................................................................
     ..................................................................
     ..................................................................
-    .....┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬.............................
-    ...0.::::::::::::::::::::::::::::::::.............................
-    .....::::::::::::::::::::::::::::::::..┌┐.........................
+    ..┌─.┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬┬.............................
+    ..│0.::::::::::::::::::::::::::::::::.............................
+    ..└─.::::::::::::::::::::::::::::::::..┌┐.........................
     .....┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴┴──┤:.........................
     .......................................└┘.........................
     ..................................................................

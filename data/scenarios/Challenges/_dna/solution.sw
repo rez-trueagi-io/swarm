@@ -60,8 +60,9 @@ def go =
     waitWhileHere sentinel;
     moveToPattern;
     replicatePattern moveToOtherRow 32;
-    move;
-    _ <- grab;
+    
+    // Activate the switch
+    drill forward;
     end;
 
 go;

@@ -48,7 +48,6 @@ def getComplementNumber = \n.
     };
     end;
 
-
 def waitWhileHere = \item.
     stillHere <- ishere item;
     if stillHere {
@@ -65,13 +64,23 @@ def waitUntilHere = \item.
     };
     end;
 
+def waitUntilHas = \item.
+    hasNow <- has item;
+    if hasNow {} {
+        wait 2;
+        waitUntilHas item;
+    };
+    end;
+
 def myStandby =
     teleport self (1, -4);
-    _flower <- grab;
+    entToClone <- grab;
     teleport self (3, -11);
-    waitWhileHere "bit (0)";
+    waitWhileHere "switch (off)";
     teleport self (36, -11);
     turn back;
+
+    return entToClone;
     end;
 
 def waitForItem : dir -> cmd text = \d.
@@ -79,18 +88,17 @@ def waitForItem : dir -> cmd text = \d.
     case item (\_. waitForItem d) return;
     end;
 
-def placeComplements = \n.
+def placeComplements = \d. \n.
     if (n > 0) {
-        item <- waitForItem left;
+        item <- waitForItem d;
         baseNumber <- getNumberForBase item;
         complementNumber <- getComplementNumber baseNumber;
         newItem <- getBaseForNumber complementNumber;
-        create newItem;
         place newItem;
         move;
-        placeComplements $ n - 1;
+        placeComplements d $ n - 1;
     } {
-        selfdestruct;
+        // selfdestruct;
     };
     end;
 
@@ -104,36 +112,68 @@ def placeBase = \standbyFunc. \n.
         place ent;
         move;
 
-        placeBase standbyFunc $ n - 1;
+        clonedOrganism <- placeBase standbyFunc $ n - 1;
 
-        place ent;
-        move;
+        // Verifies the original placement order
+        placedEnt <- scan down;
+        isGood <- case placedEnt (\_. return false) (\x. return $ x == ent);
+
+        move;        
+        if isGood {
+            return clonedOrganism;
+        } {
+            return "organic sludge";
+        };
     } {
+        // Returns the clonedOrganism
         standbyFunc;
-        
     };
     end;
 
 def spawnComplementer =
-    create "treads";
-    create "scanner";
-    _buddy <- build {
+    buddy <- build {
+
+        require 64 "guanine";
+        require 64 "cytosine";
+        require 64 "adenine";
+        require 64 "thymine";
+
+        appear "U";
+
         turn right;
         move;
         turn left;
-        placeComplements 32;
+        placeComplements left 32;
+
+        turn right;
+        doN 9 move;
+        turn right;
+        move;
+
+        waitUntilHas "gold coin";
+        placeComplements right 32;
+
+        appear "x";
     };
+    return buddy;
     end;
 
 def makeDnaStrand =
     teleport self (5, -2);
-    spawnComplementer;
-    placeBase myStandby 32;
+    r <- spawnComplementer;
+    clonedOrganism <- placeBase myStandby 32;
+    drill forward;
+    teleport self (36, -12);
+    give r "gold coin";
+
+    return clonedOrganism
     end;
 
 def go =
     waitUntilHere "flower";
-    makeDnaStrand;
+    clonedOrganism <- makeDnaStrand;
+    teleport self (40, -13);
+    place clonedOrganism;
     end;
 
 go;
