@@ -29,6 +29,7 @@ import Swarm.Game.Display (
   defaultEntityDisplay,
   displayAttr,
   displayChar,
+  displayObscured,
   displayPriority,
   hidden,
  )
@@ -200,6 +201,7 @@ displayStatic s =
   defaultEntityDisplay (staticChar s)
     & displayPriority .~ maxBound -- Static has higher priority than anything else
     & displayAttr .~ AEntity
+    & displayObscured .~ True
 
 -- | Given a value from 0--15, considered as 4 bits, pick the
 --   character with the corresponding quarter pixels turned on.
