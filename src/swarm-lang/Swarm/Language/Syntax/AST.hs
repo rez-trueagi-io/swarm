@@ -7,6 +7,7 @@
 --
 -- Types represeting the surface syntax and terms for Swarm programming language.
 module Swarm.Language.Syntax.AST (
+  ImportLocation (..),
   Syntax' (..),
   LetSyntax (..),
   Term' (..),
@@ -137,6 +138,9 @@ data Term' ty
   | -- | Run the given command, then suspend and wait for a new REPL
     --   input.
     SSuspend (Syntax' ty)
+  | -- | Import a term containing definitions, which will be in scope
+    --   in the following term.
+    SImportIn ImportLocation (Syntax' ty)
   deriving
     ( Eq
     , Show
@@ -157,6 +161,12 @@ data Term' ty
 
 instance Data ty => Plated (Term' ty) where
   plate = uniplate
+
+-- | XXX
+data ImportLocation = LocalFile Text | RemoteFile Text
+  deriving (Eq, Ord, Show, Data, Generic)
+
+-- XXX For RemoteFile, use HttpIri from iri package
 
 ------------------------------------------------------------
 -- Basic terms

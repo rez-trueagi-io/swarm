@@ -498,6 +498,8 @@ data InvalidAtomicReason
     LongConst
   | -- | The argument contained a suspend
     AtomicSuspend
+  | -- | The argument container an import
+    AtomicImport
   deriving (Show)
 
 ------------------------------------------------------------
@@ -1230,6 +1232,7 @@ analyzeAtomic locals (Syntax l t) = case t of
   -- We should never encounter a suspend since it cannot be written
   -- explicitly in the surface syntax.
   SSuspend {} -> throwTypeErr l $ InvalidAtomic AtomicSuspend t
+  SImportIn {} -> throwTypeErr l $ InvalidAtomic AtomicImport t
 
 -- | A simple polytype is a simple type with no quantifiers.
 isSimpleUPolytype :: UPolytype -> Bool

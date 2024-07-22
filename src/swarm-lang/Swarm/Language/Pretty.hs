@@ -340,6 +340,7 @@ instance PrettyPrec (Term' ty) where
     SSuspend t ->
       pparens (p > 10) $
         "suspend" <+> prettyPrec 11 t
+    SImportIn _x _t -> error "XXX unimplemented: pretty SImportIn"
 
 prettyEquality :: (Pretty a, PrettyPrec b) => (a, Maybe b) -> Doc ann
 prettyEquality (x, Nothing) = pretty x
@@ -592,6 +593,7 @@ instance PrettyPrec InvalidAtomicReason where
     LongConst -> "commands that can take multiple ticks to execute are not allowed"
     AtomicSuspend ->
       "encountered a suspend command inside an atomic block" <> hardline <> reportBug
+    AtomicImport -> "import is not allowed"
 
 instance PrettyPrec LocatedTCFrame where
   prettyPrec p (LocatedTCFrame _ f) = prettyPrec p f
