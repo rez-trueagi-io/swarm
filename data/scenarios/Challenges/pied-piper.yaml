@@ -1,0 +1,173 @@
+version: 1
+name: Pied Piper
+author: Karl Ostmo
+description: |
+  Rid the village of pests.
+creative: false
+attrs:
+  - name: oats
+    fg: "#444444"
+    bg: "#F5DEB3"
+  - name: bridge
+    bg: "#806040"
+terrains:
+  - name: bridge
+    attr: bridge
+    description: |
+      Wooden raised path
+robots:
+  - name: base
+    dir: north
+    devices:
+      - 3D printer
+      - ADT calculator
+      - antenna
+      - branch predictor
+      - clock
+      - comparator
+      - counter
+      - dictionary
+      - grabber
+      - lambda
+      - logger
+      - net
+      - scanner
+      - strange loop
+      - string
+      - workbench
+  - name: rat
+    system: true
+    dir: west
+    display:
+      invisible: false
+      char: 'r'
+    devices:
+      - logger
+    program: |
+      run "scenarios/Challenges/_pied-piper/rat.sw"
+  - name: helper
+    loc: [0, 0]
+    system: true
+    dir: west
+    display:
+      invisible: false
+    devices:
+      - logger
+    program: |
+      teleport base (12, -13);
+objectives:
+  - goal:
+      - Rats have infested the dwellings. Clear them out!
+    condition: |
+      try {
+        r <- robotNamed "rat";
+        return false;
+      } {return true}
+solution: |
+  run "scenarios/Challenges/_pied-piper/solution.sw"
+entities:
+  - name: door
+    display:
+      char: 'X'
+    description:
+      - door
+    properties: [known]
+  - name: oats
+    display:
+      attr: oats
+      char: 'a'
+    description:
+      - Grain
+    properties: [known, pickable, growable]
+    growth:
+      duration: [20, 30]
+known: [water]
+seed: 0
+world:
+  structures:
+    - name: house
+      structure:
+        palette:
+          'd': [stone, door]
+          'x': [stone, boulder]
+          '.': [stone]
+          'r': [stone, erase, rat]
+        map: |
+          xxxxxxxxxx
+          x........x
+          d........x
+          x........x
+          x.....r..x
+          x........x
+          x........x
+          xxxxxxxxxx
+    - name: road
+      structure:
+        palette:
+          's': [stone]
+        map: |
+          ssss
+          ssss
+          ssss
+          ssss
+          ssss
+          ssss
+          ssss
+          ssss
+          ssss
+          ssss
+          ssss
+          ssss
+          ssss
+    - name: street pair
+      structure:
+        placements:
+          - src: road
+            offset: [0, 0]
+          - src: house
+            offset: [-11, 0]
+            orient:
+              up: south
+          - src: house
+            offset: [16, 0]
+            orient:
+              flip: true
+        map: ""
+    - name: block
+      structure:
+        placements:
+          - src: street pair
+            offset: [0, 2]
+            orient:
+              flip: true
+          - src: street pair
+            offset: [0, 4]
+        map: ""
+  palette:
+    'Ω': [grass, erase, base]
+    '.': [grass]
+    'b': [bridge, erase]
+  placements:
+    - src: block
+      offset: [-7, -11]
+    - src: block
+      offset: [-7, -29]
+      orient:
+        up: east
+    - src: block
+      offset: [23, -29]
+      orient:
+        up: east
+  upperleft: [0, 7]
+  dsl: |
+    overlay
+    [ {grass}
+    , mask (y > -2 && y < 2) {water}
+    , mask (x > 17 && x < 22) {stone}
+    ]
+  map: |
+    Ω...bbbb..
+    ....bbbb..
+    ....bbbb..
+    ....bbbb..
+    ....bbbb..
