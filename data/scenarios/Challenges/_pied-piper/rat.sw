@@ -18,8 +18,8 @@ def moveUntilBlocked =
 def pauseAtRandom =
     r <- random 3;
     if (r == 0) {
-        r2 <- random 8;
-        wait $ 4 + r2;
+        r2 <- random 12;
+        wait $ 6 + r2;
     } {}
     end;
 

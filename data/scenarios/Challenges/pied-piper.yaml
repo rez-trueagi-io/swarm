@@ -17,6 +17,7 @@ terrains:
       Wooden raised path
 robots:
   - name: base
+    loc: [18, -22]
     dir: north
     devices:
       - 3D printer
@@ -35,6 +36,9 @@ robots:
       - strange loop
       - string
       - workbench
+    inventory:
+      - [50, oats]
+      - [50, tree]
   - name: rat
     system: true
     dir: west
@@ -46,7 +50,7 @@ robots:
     program: |
       run "scenarios/Challenges/_pied-piper/rat.sw"
   - name: helper
-    loc: [0, 0]
+    loc: [0, 10]
     system: true
     dir: west
     display:
@@ -54,10 +58,10 @@ robots:
     devices:
       - logger
     program: |
-      teleport base (12, -13);
+      noop;
 objectives:
   - goal:
-      - Rats have infested the dwellings. Clear them out!
+      - Rats have infested the village dwellings. Clear them out!
     condition: |
       try {
         r <- robotNamed "rat";
@@ -101,29 +105,9 @@ world:
           x........x
           x........x
           xxxxxxxxxx
-    - name: road
-      structure:
-        palette:
-          's': [stone]
-        map: |
-          ssss
-          ssss
-          ssss
-          ssss
-          ssss
-          ssss
-          ssss
-          ssss
-          ssss
-          ssss
-          ssss
-          ssss
-          ssss
     - name: street pair
       structure:
         placements:
-          - src: road
-            offset: [0, 0]
           - src: house
             offset: [-11, 0]
             orient:
@@ -137,36 +121,36 @@ world:
       structure:
         placements:
           - src: street pair
-            offset: [0, 2]
+            offset: [0, 0]
             orient:
               flip: true
           - src: street pair
-            offset: [0, 4]
+            offset: [0, 9]
         map: ""
   palette:
-    'Ω': [grass, erase, base]
     '.': [grass]
     'b': [bridge, erase]
   placements:
     - src: block
-      offset: [-7, -11]
+      offset: [-7, -6]
     - src: block
-      offset: [-7, -29]
+      offset: [-7, -24]
       orient:
         up: east
     - src: block
-      offset: [23, -29]
+      offset: [23, -24]
       orient:
         up: east
-  upperleft: [0, 7]
+  upperleft: [0, 2]
   dsl: |
     overlay
     [ {grass}
     , mask (y > -2 && y < 2) {water}
     , mask (x > 17 && x < 22) {stone}
+    , mask (y > -37 && y < -32) {stone}
     ]
   map: |
-    Ω...bbbb..
+    ....bbbb..
     ....bbbb..
     ....bbbb..
     ....bbbb..
