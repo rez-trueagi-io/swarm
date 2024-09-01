@@ -17,8 +17,8 @@ terrains:
       Wooden raised path
 robots:
   - name: base
-    loc: [18, -22]
-    dir: north
+    loc: [19, 7]
+    dir: south
     devices:
       - 3D printer
       - ADT calculator
@@ -26,19 +26,24 @@ robots:
       - branch predictor
       - clock
       - comparator
+      - compass
       - counter
       - dictionary
       - grabber
+      - hearing aid
       - lambda
       - logger
       - net
       - scanner
       - strange loop
       - string
+      - treads
       - workbench
     inventory:
-      - [50, oats]
-      - [50, tree]
+      - [200, oats]
+    walkable:
+      never:
+        - door
   - name: rat
     system: true
     dir: west
@@ -49,16 +54,6 @@ robots:
       - logger
     program: |
       run "scenarios/Challenges/_pied-piper/rat.sw"
-  - name: helper
-    loc: [0, 10]
-    system: true
-    dir: west
-    display:
-      invisible: false
-    devices:
-      - logger
-    program: |
-      noop;
 objectives:
   - goal:
       - Rats have infested the village dwellings. Clear them out!
@@ -72,10 +67,17 @@ solution: |
 entities:
   - name: door
     display:
-      char: 'X'
+      char: 'D'
     description:
       - door
     properties: [known]
+  - name: wall
+    display:
+      char: 'W'
+      attr: wood
+    description:
+      - wall
+    properties: [known, unwalkable]
   - name: oats
     display:
       attr: oats
@@ -93,7 +95,7 @@ world:
       structure:
         palette:
           'd': [stone, door]
-          'x': [stone, boulder]
+          'x': [stone, wall]
           '.': [stone]
           'r': [stone, erase, rat]
         map: |
@@ -150,8 +152,8 @@ world:
     , mask (y > -37 && y < -32) {stone}
     ]
   map: |
-    ....bbbb..
-    ....bbbb..
-    ....bbbb..
-    ....bbbb..
-    ....bbbb..
+    ....bbbb
+    ....bbbb
+    ....bbbb
+    ....bbbb
+    ....bbbb

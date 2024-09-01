@@ -1,8 +1,15 @@
-def go =
-  place "tree";
-  move; move;
-  // place "oats";
+def doN = \n. \f. if (n > 0) {f; doN (n - 1) f} {}; end;
+
+def makeOatsTrail =
+  place "oats";
+  doN 4 move;
   end;
 
-wait 10;
+def go =
+  doN 5 makeOatsTrail;
+  turn back;
+  doN (5*4) move;
+  turn back;
+  end;
+
 go;
