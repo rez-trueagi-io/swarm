@@ -1,3 +1,14 @@
+def checkExpireSelf =
+    loc <- whereami;
+    if (snd loc > 6) {selfdestruct} {};
+    end;
+
+
+def moveWithMortality =
+    move;
+    instant checkExpireSelf;
+    end;
+
 def goFoodDir = \f. \r.
     // say "in goFoodDir";
     let d = fst r in
@@ -15,7 +26,7 @@ def goFoodDir = \f. \r.
         // navigation direction is determined
         // but before we move.
         try {
-            move;
+            moveWithMortality;
         } {};
         f;
     }
@@ -33,7 +44,7 @@ def goHomeDir = \f. \r.
         // navigation direction is determined
         // but before we move.
         try {
-            move;
+            moveWithMortality;
         } {};
         f;
     }
@@ -52,7 +63,7 @@ def moveUntilBlocked =
     isBlocked <- blocked;
     if isBlocked {
     } {
-        move;
+        moveWithMortality;
         moveUntilBlocked;
     };
     end;
@@ -78,10 +89,6 @@ def pursueFood = \hadSensedFood. \homeLoc.
         goFoodDir $ pursueFood true homeLoc;
     end;
 
-def checkExpireSelf =
-    loc <- whereami;
-    if (snd loc > 6) {selfdestruct} {};
-    end;
 
 def doMovement = \startLoc.
     // say "in doMovement";

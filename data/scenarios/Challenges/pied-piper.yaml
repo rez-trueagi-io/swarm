@@ -23,6 +23,7 @@ robots:
       - 3D printer
       - ADT calculator
       - antenna
+      - binoculars
       - branch predictor
       - clock
       - comparator
@@ -34,10 +35,12 @@ robots:
       - lambda
       - logger
       - net
+      - rolex
       - scanner
       - strange loop
       - string
       - treads
+      - tweezers
       - workbench
     inventory:
       - [200, oats]
@@ -87,10 +90,21 @@ entities:
     properties: [known, pickable, growable]
     growth:
       duration: [20, 30]
-known: [water]
+known: [water, boulder]
 seed: 0
 world:
   structures:
+    - name: burrow
+      structure:
+        mask: '.'
+        palette:
+          'x': [stone, boulder]
+        map: |
+          .xxxx.
+          xx..xx
+          x.....
+          xx..xx
+          .xxxx.
     - name: house
       structure:
         palette:
@@ -143,6 +157,8 @@ world:
       offset: [23, -24]
       orient:
         up: east
+    # - src: burrow
+    #   offset: [-7, 10]
   upperleft: [0, 2]
   dsl: |
     overlay
