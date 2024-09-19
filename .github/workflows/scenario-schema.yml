@@ -26,3 +26,4 @@ jobs:
           pip install check-jsonschema
       - run: |
           scripts/validate/json-schemas.sh
+
