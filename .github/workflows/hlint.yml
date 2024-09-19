@@ -29,3 +29,4 @@ jobs:
       with:
         path: '["src/", "app/", "test/"]'
         fail-on: suggestion
+
